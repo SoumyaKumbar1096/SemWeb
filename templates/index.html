@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <h1>Template</h1>
+{% endblock %}
+
+{% block body %}
+    <form enctype = "multipart/form-data" action = "download_file.py" method = "post">
+        <p>Upload File: <input type="file" name="filename"/></p>
+        <p> <input type="submit" value="upload"/></p>
+    </form>
+{% endblock %}
