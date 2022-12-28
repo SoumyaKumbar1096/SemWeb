@@ -5,8 +5,16 @@
 {% endblock %}
 
 {% block body %}
-    <form enctype = "multipart/form-data" action = "download_file.py" method = "post">
-        <p>Upload File: <input type="file" name="filename"/></p>
-        <p> <input type="submit" value="upload"/></p>
-    </form>
+    <p>Upload the schedule here</p>
+    <form action = "http://localhost:5000/uploader" method = "POST"
+         enctype = "multipart/form-data">
+         <input type = "file" name = "file" />
+         <input type = "submit"/>
+      </form>
+    <p>Add an event</p>
+    <p>Validate the event</p>
+    <p>List the upcoming events on a given date</p>
+    <p>List the upcoming events happening in Saint-Etienne that are not courses</p>
+    <p>Add an attendee</p>
+
 {% endblock %}
