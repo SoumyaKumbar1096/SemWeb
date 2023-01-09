@@ -1,13 +1,14 @@
 import os
-
 from flask import Flask, render_template, url_for, request, flash, redirect
 from SPARQLWrapper import SPARQLWrapper, JSON, N3
-
 import rdflib
 from pprint import pprint
-
 from rdflib import Graph
 from werkzeug.utils import secure_filename
+
+from calender_to_RDF import convertto_RDF
+
+
 
 sparql = SPARQLWrapper('http://localhost:3030/new_dataset')
 sparql.setReturnFormat(JSON)
@@ -43,7 +44,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/uploader', methods = ['GET', 'POST'])
+@app.route('/upload_file', methods = ['GET', 'POST'])
 def upload_file():
    if request.method == 'POST':
        if 'file' not in request.files:
@@ -51,6 +52,7 @@ def upload_file():
            return redirect(request.url)
 
        file = request.files['file']
+
        if file.filename == '':
            flash('No selected file')
            return redirect(request.url)
@@ -59,6 +61,9 @@ def upload_file():
            filename = secure_filename(file.filename)
            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
            return redirect(url_for('download_file', name=filename))
+
+       rdf_calender = convertto_RDF(file.filename)
+
 
    return '''
         <!doctype html>
@@ -69,6 +74,7 @@ def upload_file():
           <input type=submit value=Upload>
         </form>
         '''
+
 
 
 
