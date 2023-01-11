@@ -14,7 +14,8 @@ sparql.setCredentials("ldpuser", "LinkedDataIsGreat")
 
 sparql.setQuery("""
             SELECT * 
-            WHERE { ?sub ?pred ?obj . }
+            WHERE { ?sub ?startDate "2022-09-27"^^xsd:date.
+                    }
             LIMIT 10           
             """  
 )
