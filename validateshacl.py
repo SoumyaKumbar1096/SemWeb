@@ -1,15 +1,19 @@
 from pyshacl import validate
 
 
-r = validate(data_graph,
-      shacl_graph=sg,
-      ont_graph=og,
-      inference='rdfs',
-      abort_on_first=False,
-      allow_infos=False,
-      allow_warnings=False,
-      meta_shacl=False,
-      advanced=False,
-      js=False,
-      debug=False)
-conforms, results_graph, results_text = r
+pyshacl = "${pyshacl}"
+shape_graph = "C:\\Users\\Siva Ratnam Pachava\\OneDrive\\Desktop\\SemW P\\SemWeb\\EVENT.ttl"
+data_graph = "C:\\Users\\Siva Ratnam Pachava\\OneDrive\\Desktop\\SemW P\\SemWeb\\rdf_cal.ttl"
+results = validate(
+    data_graph,
+    shacl_graph=shape_graph,
+    data_graph_format="ttl",
+    shacl_graph_format="ttl",
+    inference="rdfs",
+    debug=True,
+    serialize_report_graph="ttl",
+    )
+
+conforms, report_graph, report_text = results
+
+"conforms", conforms, results, dir(report_graph), repr(report_graph)
