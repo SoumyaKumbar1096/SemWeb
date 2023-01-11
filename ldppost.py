@@ -44,4 +44,3 @@ for event in g.subjects(rdf.type,SCHEMA.Event):
 
     params = {'graph': graph_name}  # optional
     response = requests.post(url, headers=headers,  auth=(username, password), params=params, data=event)
-    # #print(response.text)

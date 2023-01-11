@@ -6,7 +6,6 @@ app = Flask(__name__)
 @app.route('/caldata', methods = ['GET'])
 
 def convertto_RDF():
-        #file = "static\\uploads\\" + fileName
         
         rdf = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
         rdfs = Namespace("http://www.w3.org/2000/01/rdf-schema#")
@@ -19,14 +18,12 @@ def convertto_RDF():
         g.bind("schema", SCHEMA)
         g.bind("ldp", ldp)
 
-        #schedule = URIRef("https://ci.mines-stetienne.fr/cps2/schedule/")
         schedule = URIRef("https://territoire.emse.fr/ldp/sivasoumya/")
 
         g.add((schedule, rdf.type, SCHEMA.Thing))
         g.add((schedule, rdf.type, SCHEMA.schedule))
         g.add((schedule, SCHEMA.description, Literal("The graph contains the rdf representation of our university Calender events")))
         
-        #with open('ADECal.ics', 'r') as f:
         with open('ADECal.ics', 'r') as f:
             ecal = Calendar.from_ical(f.read())
             for component in ecal.walk():
@@ -45,9 +42,7 @@ def convertto_RDF():
                 #g.add((event, SCHEMA.Attendee, Literal("23")))
 
             f.close()
-        #rdfFilePath = "static\\rdfFiles\\" + fileName + "_rdf"
-        #print(g.serialize(rdfFilePath, format="ttl"))
         return(g.serialize(format="ttl"))
-        #return rdfFilePath
+
 if __name__ == "__main__":
     app.run(debug=True)
