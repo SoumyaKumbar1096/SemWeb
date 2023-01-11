@@ -1,11 +1,13 @@
 from icalendar import Calendar
 from rdflib import Graph, URIRef, Namespace, Literal, BNode
+from flask import Flask
 
+app = Flask(__name__)
+@app.route('/caldata', methods = ['GET'])
 
-
-def convertto_RDF(fileName):
+def convertto_RDF():
         #file = "static\\uploads\\" + fileName
-        file = fileName
+        
         rdf = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
         rdfs = Namespace("http://www.w3.org/2000/01/rdf-schema#")
         SCHEMA = Namespace("https://schema.org/")
@@ -25,7 +27,7 @@ def convertto_RDF(fileName):
         g.add((schedule, SCHEMA.description, Literal("The graph contains the rdf representation of our university Calender events")))
         
         #with open('ADECal.ics', 'r') as f:
-        with open(file, 'r') as f:
+        with open('ADECal.ics', 'r') as f:
             ecal = Calendar.from_ical(f.read())
             for component in ecal.walk():
              event = BNode()
@@ -45,11 +47,7 @@ def convertto_RDF(fileName):
             f.close()
         #rdfFilePath = "static\\rdfFiles\\" + fileName + "_rdf"
         #print(g.serialize(rdfFilePath, format="ttl"))
-        print(g.serialize("rdf_cal.ttl", format="ttl"))
+        return(g.serialize(format="ttl"))
         #return rdfFilePath
-
-convertto_RDF('ADECal.ics')
-
-
-
-
+if __name__ == "__main__":
+    app.run(debug=True)
