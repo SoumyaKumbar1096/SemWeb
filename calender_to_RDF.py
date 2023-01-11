@@ -4,7 +4,8 @@ from rdflib import Graph, URIRef, Namespace, Literal, BNode
 
 
 def convertto_RDF(fileName):
-        file = "static\\uploads\\" + fileName
+        #file = "static\\uploads\\" + fileName
+        file = fileName
         rdf = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
         rdfs = Namespace("http://www.w3.org/2000/01/rdf-schema#")
         SCHEMA = Namespace("https://schema.org/")
@@ -39,11 +40,12 @@ def convertto_RDF(fileName):
                 #g.add((event, SCHEMA.Attendee, Literal("23")))
 
             f.close()
-        rdfFilePath = "static\\rdfFiles\\" + fileName + "_rdf"
-        print(g.serialize(rdfFilePath, format="ttl"))
-        return rdfFilePath
+        #rdfFilePath = "static\\rdfFiles\\" + fileName + "_rdf"
+        #print(g.serialize(rdfFilePath, format="ttl"))
+        print(g.serialize("rdf_cal", format="ttl"))
+        #return rdfFilePath
 
-
+convertto_RDF('ADECal.ics')
 
 
 
