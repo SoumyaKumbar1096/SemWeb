@@ -14,7 +14,7 @@ sparql = SPARQLWrapper('http://localhost:3030/new_dataset')
 sparql.setReturnFormat(JSON)
 #
 
-
+sparql.setCredentials("ldp", "LinkedDataIsGreat")
 qres = sparql.query().convert()
 
 ########## printing the query result ##################3
