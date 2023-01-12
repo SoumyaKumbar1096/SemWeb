@@ -1,8 +1,6 @@
 from icalendar import Calendar
 from rdflib import Graph, URIRef, Namespace, Literal, BNode
 
-
-
 def convertto_RDF():
         rdf = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
         rdfs = Namespace("http://www.w3.org/2000/01/rdf-schema#")
@@ -15,30 +13,55 @@ def convertto_RDF():
         g.bind("schema", SCHEMA)
         g.bind("ldp", ldp)
 
-        schedule = URIRef("https://territoire.emse.fr/ldp/sivasoumya/")
+        container = URIRef("https://territoire.emse.fr/ldp/spsk/")
 
-        g.add((schedule, rdf.type, SCHEMA.Thing))
-        g.add((schedule, rdf.type, SCHEMA.schedule))
-        g.add((schedule, SCHEMA.description, Literal("The graph contains the representation of our university Calender events", lang = ("en"))))
+        g.add((container, rdf.type, SCHEMA.Thing))
+        g.add((container, rdf.type, SCHEMA.schedule))
+       # g.add((container, rdf.type, SCHEMA.event))
+        g.add((container, SCHEMA.description, Literal("The graph contains the representation of our university Calender events", lang = ("en"))))
         
         with open('ADECal.ics', 'r') as f:
             ecal = Calendar.from_ical(f.read())
             for component in ecal.walk():
-             event = BNode()
+             #event = BNode()
              if component.name == "VEVENT":
-                 
-                g.add((schedule, ldp.containes, event))
-                g.add((event, rdf.type, SCHEMA.Event))
-                g.add((event, SCHEMA.name, Literal(component.get("summary"))))
-                g.add((event, SCHEMA.location, Literal(component.get("location"))))
-                g.add((event, SCHEMA.startDate, Literal(component.decoded("dtstart"))))
-                g.add((event, SCHEMA.endDate, Literal(component.decoded("dtend"))))
-                g.add((event, SCHEMA.director, Literal(component.decoded("DESCRIPTION"))))
+                
+                description = component.decoded("DESCRIPTION").decode("utf-8").split()
+                description = description[:-3]
+                wdescription = ' '.join(description)
+                uid = component.get("uid")
+                url = "/{}".format(uid)
+                schedule = URIRef( url )
+                
+                dtstart = str(component.decoded("dtstart")).split()
+                dtstartdate = dtstart[0]
+                #print(dtstartdate)
+                dtstarttime = dtstart[1]
+                #print(dtstarttime)
+                
+                dtend = str(component.decoded("dtend")).split()
+                dtenddate = dtend[0]
+                #print(dtenddate)
+                dtendtime = dtend[1]
+                #print(dtendtime)
+                
+                g.add((container, ldp.containes, schedule))
+                g.add((schedule, rdf.type, SCHEMA.Event))
+                g.add((schedule, SCHEMA.name, Literal(component.get("summary"))))
+                g.add((schedule, SCHEMA.location, Literal(component.get("location"))))
+                #g.add((schedule, SCHEMA.startDate, Literal(component.decoded("dtstart"))))
+                #g.add((schedule, SCHEMA.endDate, Literal(component.decoded("dtend"))))
+                g.add((schedule, SCHEMA.startDate, Literal(dtstartdate)))
+                g.add((schedule, SCHEMA.startTime, Literal(dtstarttime)))
+                g.add((schedule, SCHEMA.endDate, Literal(dtenddate)))
+                g.add((schedule, SCHEMA.endTime, Literal(dtendtime)))
+                g.add((schedule, SCHEMA.organizer, Literal(wdescription)))
+                g.add((schedule, SCHEMA.uid, Literal(component.get("uid"))))
                 #g.add((event, SCHEMA.duration, Literal("03:30")))
                 #g.add((event, SCHEMA.Attendee, Literal("23")))
 
             f.close()
-        print(g.serialize(r"rdf_cal.ttl", format="ttl"))
+        print(g.serialize(r"rdf_cal_F.ttl", format="ttl"))
         
 
 convertto_RDF()

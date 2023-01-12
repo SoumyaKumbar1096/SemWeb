@@ -15,10 +15,10 @@ sparql.setQuery("""
     WHERE {
         <https://territoire.emse.fr/ldp/spsk/> ldp:hasMemberRelation ldp:member ;
         ldp:member ?id.
-        ?id ns1:startDate "2022-09-07"^^xsd:date.
-        
+        ?id ns1:organizer ?o.
+        FILTER( regex(?o, "EMSE", "i"))
+        FILTER (!regex(?o, "CPS2", "i"))
     }
-    LIMIT 10
     """ 
 )
 
