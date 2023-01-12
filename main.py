@@ -11,14 +11,6 @@ from werkzeug.utils import secure_filename
 
 from calender_to_RDF import convertto_RDF
 
-
-
-sparql = SPARQLWrapper('http://localhost:3030/new_dataset')
-sparql.setReturnFormat(JSON)
-#
-
-sparql.setCredentials("ldp", "LinkedDataIsGreat")
-qres = sparql.query().convert()
 UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTENSIONS = {'ttl', 'ics'}
 
@@ -27,7 +19,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def hello():
-    return render_template('index.html')
+    return render_template("index.html")
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -50,9 +42,7 @@ def upload_file():
            filename = secure_filename(file.filename)
            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
            return redirect(url_for('download_file', name=filename))
-
        rdf_calender = convertto_RDF(file.filename)
-
 
    return '''
         <!doctype html>
@@ -115,22 +105,46 @@ def add_event():
 #R3 - ListUpcomingEvents
 @app.route('/upcoming_events', methods=['GET'])
 def upcoming_events():
-    sparql.setQuery('''  
-                SELECT * 
-                WHERE { ?sub ?pred ?obj . } 
-                LIMIT 10
-            ''')
+    url = 'https://territoire.emse.fr/ldp/'
+
+    username = "ldpuser"
+    password = "LinkedDataIsGreat"
+    sparql = SPARQLWrapper(url)
+    sparql.setReturnFormat(JSON)
+    sparql.setCredentials("ldpuser", "LinkedDataIsGreat")
+    current_time = "2022-12-14T14:30:00+00:00"
+    sparql.setQuery(f"""
+                PREFIX schema:<https://schema.org/>
+                PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                prefix ex: <http://example.com/>                    
+
+                SELECT ?sub ?startDate
+                WHERE {{
+                ?sub a schema:Event;
+                schema:startDate ?startDate.
+                FILTER(?startDate > "{current_time}"^^xsd:dateTime) 
+                FILTER(STRSTARTS(STR(?sub), "https://territoire.emse.fr/ldp/arshaveedas-isaacfatokun/")) 
+                }}
+            """
+                    )
+    try:
+        ret = sparql.queryAndConvert()
+
+        for r in ret["results"]["bindings"]:
+            print(r)
+    except Exception as e:
+        print(e)
 
     return 'ret'
 
 #R4 - ListEventsThatAreNotCourses(requires a property to define the type of a event)
 @app.route('/list_other_events', methods=['GET'])
 def list_other_events():
-    sparql.setQuery('''  
-                    SELECT * 
-                    WHERE { ?sub ?pred ?obj . } 
-                    LIMIT 10
-                ''')
+    # sparql.setQuery('''
+    #                 SELECT *
+    #                 WHERE { ?sub ?pred ?obj . }
+    #                 LIMIT 10
+    #             ''')
     return 'soemthing'
 
 #R5 - AddAnAttendee
@@ -160,11 +174,11 @@ def add_attendee():
     graph.add((event, rdf.type, SCHEMA.Event))
     graph.add((event, SCHEMA.uid, Literal(uid)))
     graph.add((event, SCHEMA.startDate, Literal(startDate)))
-    graph.add((event, SCHEMA.endDate, Literal(endDate)))
-    graph.add((event, SCHEMA.location, Literal(location)))
-    graph.add((event, SCHEMA.director, Literal(organizer)))
-    graph.add((event, SCHEMA.name, Literal(eventName)))
-    graph.add((event, SCHEMA.attendee, Literal(attendeeName)))
+    # graph.add((event, SCHEMA.endDate, Literal(endDate)))
+    # graph.add((event, SCHEMA.location, Literal(location)))
+    # graph.add((event, SCHEMA.director, Literal(organizer)))
+    # graph.add((event, SCHEMA.name, Literal(eventName)))
+    # graph.add((event, SCHEMA.attendee, Literal(attendeeName)))
     headers = {
         'Content-type': 'text/turtle',
     }
@@ -183,3 +197,4 @@ def validate():
 
 if __name__ == "__main__":
     app.run(debug=True)
+

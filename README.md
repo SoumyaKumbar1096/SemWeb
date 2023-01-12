@@ -25,6 +25,7 @@
   * [Note]: use SPARQL
 * R5 - Modify an existing event to indicate that someone has attended it
   * [Note]: (e.g. "I attended the last SemWeb lecture").
+  * How to do : GET event id from the user and send a post request back to the ldp
 * R6 - Validate the information defined for a given event.
   * [Note]: use SHACL
 * R7 - Validate the information defined for CPS2 course
