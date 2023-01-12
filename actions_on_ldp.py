@@ -47,6 +47,7 @@ def add_event_to_ldp():
     g.add((event, SCHEMA.endDate, Literal("dtend")))
     g.add((event, SCHEMA.director, Literal("DESCRIPTION")))
 
+
     URL = "https://territoire.emse.fr/ldp/sivasoumya/"
     headers = {'Content-Type': 'text/turtle'}
     xml_body = """<> a <http://example.org>."""
