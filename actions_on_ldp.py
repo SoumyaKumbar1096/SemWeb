@@ -68,6 +68,11 @@ def uploadfile_to_ldp():
         params = {'graph': graph_name}
         response = requests.post(container, headers=headers,  auth=(username, password), params=params, data=event)
 
+
+    URL = "https://territoire.emse.fr/ldp/sivasoumya/"
+    headers = {'Content-Type': 'text/turtle'}
+    xml_body = """<> a <http://example.org>."""
+    r = requests.post(url=URL, headers=headers, auth=('ldpuser', 'LinkedDataIsGreat'), data=xml_body)
     def add_event_to_ldp():
         # Create a BNode of these events
         g = Graph()

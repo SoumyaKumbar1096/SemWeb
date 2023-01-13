@@ -1,13 +1,10 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
-from flask import Flask
-
-
 
 sparql = SPARQLWrapper('https://territoire.emse.fr/ldp/')
 sparql.setReturnFormat(JSON)
 sparql.setCredentials("ldpuser", "LinkedDataIsGreat")
 
-
+#To get all upcoming events
 sparql.setQuery("""
     PREFIX ldp: <http://www.w3.org/ns/ldp#>
     PREFIX ns0: <https://carbonldp.com/ns/v1/platform#> 
@@ -23,11 +20,14 @@ sparql.setQuery("""
             ns1:location  ?location;
             ns1:startDate ?startDate.
             
-        FILTER(?startDate > NOW())
+        FILTER(?startDate > NOW())    
     }
     LIMIT 10
     """ 
 )
+
+#For get events on particular date in the container
+#FILTER(?startDate = "2022-12-09"^^xsd:date )
 
 try:
     qres = sparql.queryAndConvert()

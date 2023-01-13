@@ -1,3 +1,4 @@
+#To post all our events in graph to LDP container
 import requests
 from  rdflib import Graph,Namespace, Literal, URIRef, XSD
 
@@ -22,8 +23,8 @@ g.bind("ldp", ldp)
 
 for event in g.subjects(rdf.type,SCHEMA.Event):
     print(event)
-    
-    
+
+
     startDate  = g.value(event,SCHEMA.startDate)
     startTime = g.value(event,SCHEMA.startTime)
     endDate = g.value(event,SCHEMA.endDate)

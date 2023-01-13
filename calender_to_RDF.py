@@ -1,12 +1,12 @@
 from icalendar import Calendar
 from rdflib import Graph, URIRef, Namespace, Literal, XSD
 
-def convertto_RDF():
+def convertto_RDF(fileName):
+        file = "static\\uploads\\" + fileName
         rdf = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
         rdfs = Namespace("http://www.w3.org/2000/01/rdf-schema#")
         SCHEMA = Namespace("https://schema.org/")
         ldp = Namespace("http://www.w3.org/ns/ldp#")
-        
         g = Graph()
         g.bind("rdf", rdf)
         g.bind("rdfs", rdfs)
@@ -19,7 +19,7 @@ def convertto_RDF():
         g.add((container, rdf.type, SCHEMA.schedule))
         g.add((container, SCHEMA.description, Literal("The graph contains the representation of our university Calender events", lang = ("en"))))
         
-        with open('ADECal.ics', 'r') as f:
+        with open(file, 'r') as f:
             ecal = Calendar.from_ical(f.read())
             for component in ecal.walk():
              #event = BNode()
@@ -63,7 +63,7 @@ def convertto_RDF():
         print(g.serialize(r"rdf_cal_F.ttl", format="ttl"))
         
 
-convertto_RDF()
+
         
 
 

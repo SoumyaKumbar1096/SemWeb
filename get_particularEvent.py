@@ -1,3 +1,4 @@
+#To get events which are in Saint Etienne(EMSE) and not related to our course(CPS2).
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 sparql = SPARQLWrapper('https://territoire.emse.fr/ldp/')
@@ -13,7 +14,7 @@ sparql.setQuery("""
     
     SELECT ?id
     WHERE {
-        <https://territoire.emse.fr/ldp/spsk/> ldp:hasMemberRelation ldp:member ;
+        <https://territoire.emse.fr/ldp/redazaidane-husseinjaafar/> ldp:hasMemberRelation ldp:member ;
         ldp:member ?id.
         ?id ns1:organizer ?o;
             ns1:location ?obj.

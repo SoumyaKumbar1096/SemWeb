@@ -1,3 +1,5 @@
+#To post new event to the https://territoire.emse.fr/ldp/spsk/ container.
+#For every new event it will generate a new uid.
 import requests
 from  rdflib import Graph,Namespace, Literal, URIRef, XSD
 import uuid

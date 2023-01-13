@@ -4,10 +4,10 @@ sparql = SPARQLWrapper('https://territoire.emse.fr/ldp/')
 sparql.setReturnFormat(JSON)
 sparql.setCredentials("ldpuser", "LinkedDataIsGreat")
 
-
+#To get all events related to https://territoire.emse.fr/ldp/spsk/ on LDP container.
 sparql.setQuery("""
     PREFIX ldp: <http://www.w3.org/ns/ldp#>
-    PREFIX ns0: <https://carbonldp.com/ns/v1/platform#> 
+    PREFIX ns0: <https://carbonldp.com/ns/v1/platform#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     PREFIX schema: <https://schema.org/#>
     

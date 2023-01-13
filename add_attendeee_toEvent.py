@@ -1,3 +1,4 @@
+#Add attendee information to the one particulat event. (To represent that the person attend the event.)
 from SPARQLWrapper import SPARQLWrapper, JSON
 from  rdflib import Graph,Namespace, Literal, URIRef, XSD
 import requests
@@ -7,15 +8,15 @@ sparql.setReturnFormat(JSON)
 sparql.setCredentials("ldpuser", "LinkedDataIsGreat")
 eventId = "https://territoire.emse.fr/ldp/spsk/ade60323032322d3230323353542d455449454e4e452d32313931332d302d31/"
 
-sparql.setQuery(f"""
+sparql.setQuery("""
     PREFIX ldp: <http://www.w3.org/ns/ldp#>
-    PREFIX ns0: <https://carbonldp.com/ns/v1/platform#> 
+    PREFIX ns0: <https://carbonldp.com/ns/v1/platform#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
     PREFIX ns1: <https://schema.org/>
     
     SELECT *
-    WHERE {{
-        "{eventId}" a <https://schema.org/Event> ;
+    WHERE {
+        <https://territoire.emse.fr/ldp/spsk/ade60323032322d3230323353542d455449454e4e452d31303336372d302d30/> a <https://schema.org/Event> ;
         <https://schema.org/location> ?location;
         <https://schema.org/startDate> ?startDate;
         <https://schema.org/startTime> ?startTime;
@@ -23,16 +24,14 @@ sparql.setQuery(f"""
         <https://schema.org/endTime>   ?endTime;
         <https://schema.org/organizer> ?organizer;
         <https://schema.org/name>      ?name;
-        <https://schema.org/uid>        ?uid;
-         
-    }}
-    
+        <https://schema.org/uid>        ?uid;    
+    }
     """ 
 )
 
 try:
     qres = sparql.queryAndConvert()
-    print(qres["results"]["bindings"]['uid']['value'])
+    print(qres)
     for r in qres["results"]["bindings"]:
         uid = r['uid']['value']
         startDate = r['startDate']['value']
@@ -42,7 +41,8 @@ try:
         location = r['location']['value']
         organizer = r['organizer']['value']
         name = r['name']['value']
-    
+
+    print(uid, startDate, startTime, endDate, endTime, location, organizer, name)
     
     container = 'https://territoire.emse.fr/ldp/spsk/'
     username = "ldpuser"
@@ -80,15 +80,18 @@ try:
     graph.add((schedule, SCHEMA.attendee, person_graph))  
     graph.add((person_graph, SCHEMAPerson.givenName, Literal(person, datatype = XSD.string)))  
     graph.add((person_graph, SCHEMAComments.commentText, Literal(comment, datatype = XSD.string)))
+
+    print("Creating Graph to POST")
     headers = {
             'Content-type': 'text/turtle'
         }
         
     event  = graph.serialize()
+    #print(event)
     response = requests.delete(eventId, headers=headers,  auth=(username, password))
 
     response = requests.post(container, headers=headers,  auth=(username, password), data=event)
-        
+    #print("POST request sent to the container ", response)
         
 except Exception as e :
     print(e)

@@ -1,3 +1,5 @@
+#To run our graph on the Web
+
 from icalendar import Calendar
 from rdflib import Graph, URIRef, Namespace, Literal, BNode
 from flask import Flask
