@@ -81,7 +81,7 @@ try:
     graph.add((person_graph, SCHEMAPerson.givenName, Literal(person, datatype = XSD.string)))  
     graph.add((person_graph, SCHEMAComments.commentText, Literal(comment, datatype = XSD.string)))
     headers = {
-            'Content-type': 'text/turtle',
+            'Content-type': 'text/turtle'
         }
         
     event  = graph.serialize()

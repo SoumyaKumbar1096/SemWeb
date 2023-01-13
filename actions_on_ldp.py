@@ -1,6 +1,6 @@
 
 import requests
-from rdflib import Graph, Namespace, URIRef, BNode, Literal
+from rdflib import Graph, Namespace, URIRef, BNode, Literal, XSD
 
 URL = "https://territoire.emse.fr/ldp/sivasoumya/"
 rdf = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")

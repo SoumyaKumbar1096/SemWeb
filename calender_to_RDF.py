@@ -1,5 +1,5 @@
 from icalendar import Calendar
-from rdflib import Graph, URIRef, Namespace, Literal, BNode
+from rdflib import Graph, URIRef, Namespace, Literal, XSD
 
 def convertto_RDF():
         rdf = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
@@ -17,7 +17,6 @@ def convertto_RDF():
 
         g.add((container, rdf.type, SCHEMA.Thing))
         g.add((container, rdf.type, SCHEMA.schedule))
-       # g.add((container, rdf.type, SCHEMA.event))
         g.add((container, SCHEMA.description, Literal("The graph contains the representation of our university Calender events", lang = ("en"))))
         
         with open('ADECal.ics', 'r') as f:
@@ -51,10 +50,10 @@ def convertto_RDF():
                 g.add((schedule, SCHEMA.location, Literal(component.get("location"))))
                 #g.add((schedule, SCHEMA.startDate, Literal(component.decoded("dtstart"))))
                 #g.add((schedule, SCHEMA.endDate, Literal(component.decoded("dtend"))))
-                g.add((schedule, SCHEMA.startDate, Literal(dtstartdate)))
-                g.add((schedule, SCHEMA.startTime, Literal(dtstarttime)))
-                g.add((schedule, SCHEMA.endDate, Literal(dtenddate)))
-                g.add((schedule, SCHEMA.endTime, Literal(dtendtime)))
+                g.add((schedule, SCHEMA.startDate, Literal(dtstartdate, datatype = XSD.date)))
+                g.add((schedule, SCHEMA.startTime, Literal(dtstarttime, datatype = XSD.time)))
+                g.add((schedule, SCHEMA.endDate, Literal(dtenddate, datatype = XSD.date)))
+                g.add((schedule, SCHEMA.endTime, Literal(dtendtime, datatype = XSD.time)))
                 g.add((schedule, SCHEMA.organizer, Literal(wdescription)))
                 g.add((schedule, SCHEMA.uid, Literal(component.get("uid"))))
                 #g.add((event, SCHEMA.duration, Literal("03:30")))

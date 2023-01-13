@@ -41,14 +41,14 @@ headers = {
 event  = graph.serialize()
 #print(event)
 
-response = requests.get(schedule_url, headers=headers,  auth=(username, password))
+#response = requests.get(schedule_url, headers=headers,  auth=(username, password))
 #eventList = response.content.decode('UTF-8').split(";")
-eventList = response.text
+#eventList = response.text
 # for triple in eventList:
 #     print(triple)
-print(eventList)
+#print(eventList)
 
-# response = requests.delete(schedule_url, headers=headers,  auth=(username, password))
+response = requests.delete(schedule_url, headers=headers,  auth=(username, password))
 
 # response = requests.get(schedule_url, headers=headers,  auth=(username, password))
 # print("Event after deleting",response.content.decode('UTF-8'))

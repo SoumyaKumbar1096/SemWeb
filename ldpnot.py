@@ -15,11 +15,13 @@ sparql.setQuery("""
     WHERE {
         <https://territoire.emse.fr/ldp/spsk/> ldp:hasMemberRelation ldp:member ;
         ldp:member ?id.
-        ?id ns1:organizer ?o.
-        FILTER( regex(?o, "EMSE", "i"))
-        FILTER (!regex(?o, "CPS2", "i"))
+        ?id ns1:organizer ?o;
+            ns1:location ?obj.
+        FILTER( regex(?obj, "EMSE", "i"))
+        FILTER ( !regex(?o, "CPS2", "i"))
     }
-    """ 
+    LIMIT 10
+    """  
 )
 
 try:
