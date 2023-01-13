@@ -13,7 +13,7 @@ sparql.setQuery("""
     
     SELECT ?id
     WHERE {
-        <https://territoire.emse.fr/ldp/spsk/> ldp:hasMemberRelation ldp:member ;
+        <https://territoire.emse.fr/ldp/redazaidane-husseinjaafar/> ldp:hasMemberRelation ldp:member ;
         ldp:member ?id.
         ?id ns1:organizer ?o.
         FILTER( regex(?o, "EMSE", "i"))

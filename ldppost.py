@@ -22,8 +22,8 @@ g.bind("ldp", ldp)
 
 for event in g.subjects(rdf.type,SCHEMA.Event):
     print(event)
-    
-    
+
+
     startDate  = g.value(event,SCHEMA.startDate)
     startTime = g.value(event,SCHEMA.startTime)
     endDate = g.value(event,SCHEMA.endDate)

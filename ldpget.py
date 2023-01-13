@@ -4,23 +4,23 @@ sparql = SPARQLWrapper('https://territoire.emse.fr/ldp/')
 sparql.setReturnFormat(JSON)
 sparql.setCredentials("ldpuser", "LinkedDataIsGreat")
 
-
-sparql.setQuery("""
+eventdate = "2023-01-13"
+sparql.setQuery(f"""
     PREFIX ldp: <http://www.w3.org/ns/ldp#>
     PREFIX ns0: <https://carbonldp.com/ns/v1/platform#> 
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
     PREFIX ns1: <https://schema.org/>
     
     SELECT ?id
-    WHERE {
+    WHERE{{
         <https://territoire.emse.fr/ldp/spsk/> ldp:hasMemberRelation ldp:member ;
         ldp:member ?id.
-        ?id ns1:startDate "2022-09-07"^^xsd:date.
+        ?id ns1:startDate "{eventdate}"^^xsd:date.
         
-    }
+    }}
     LIMIT 10
     """ 
-)
+                )
 
 try:
     qres = sparql.queryAndConvert()

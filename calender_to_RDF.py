@@ -20,7 +20,7 @@ def convertto_RDF(fileName):
        # g.add((container, rdf.type, SCHEMA.event))
         g.add((container, SCHEMA.description, Literal("The graph contains the representation of our university Calender events", lang = ("en"))))
         
-        with open('ADECal.ics', 'r') as f:
+        with open(file, 'r') as f:
             ecal = Calendar.from_ical(f.read())
             for component in ecal.walk():
              #event = BNode()
@@ -64,7 +64,7 @@ def convertto_RDF(fileName):
         print(g.serialize(r"rdf_cal_F.ttl", format="ttl"))
         
 
-convertto_RDF()
+
         
 
 

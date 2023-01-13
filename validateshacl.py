@@ -1,8 +1,8 @@
 from pyshacl import validate
 
 
-shape_graph = "C:\\Users\\Siva Ratnam Pachava\\OneDrive\\Desktop\\SemW P\\SemWeb\\EVENT.ttl"
-data_graph = "C:\\Users\\Siva Ratnam Pachava\\OneDrive\\Desktop\\SemW P\\SemWeb\\rdf_cal.ttl"
+shape_graph = "EVENT.ttl"
+data_graph = "rdf_calender.ttl"
 
 
 r = validate(data_graph,
